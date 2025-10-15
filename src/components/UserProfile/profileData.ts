@@ -1,0 +1,135 @@
+import { BusinessInfo } from "../../types/businessInfo";
+
+export const bussinessInfoData: BusinessInfo = {
+  businessLegalName: "Works by Jesse DeBenedictis",
+  businessDBAName: "Works by Jesse DeBenedictis",
+  stateIncorporated: "MA",
+  federalTaxID: "42-4368726",
+  amountRequested: 5002000,
+  businessAddress: "60 Park St",
+  city: "Beverly",
+  state: "MA",
+  zipCode: "01915",
+  businessPhone: "(617) 470-2099",
+  businessStartDate: "Thursday, February 26, 2015",
+  industryType: "Construction Residentials",
+  typeOfEntity: "Sole Proprietors",
+  useOfFunds: "Equipment",
+  homeBasedBusiness: "Works by Jesse DeBenedictis",
+  acceptsCreditCards: "Works by Jesse DeBenedictis",
+  annualRevenue: "$500k-$1Million",
+};
+
+
+
+export const businessInfoFields = [
+  {
+    name: "businessLegalName",
+    label: "Business Legal Name",
+    type: "text",
+    placeholder: "Works by Jesse DeBenedictis",
+  },
+  {
+    name: "businessDBAName",
+    label: "Business D/B/A Name",
+    type: "text",
+    placeholder: "Works by Jesse DeBenedictis",
+  },
+  {
+    name: "stateIncorporated",
+    label: "State Incorporated",
+    type: "select",
+    options: ["MA", "CA", "NY", "TX", "FL"],
+    placeholder: "Select State (MA)",
+  },
+  {
+    name: "federalTaxID",
+    label: "Federal Tax ID #",
+    type: "text",
+    placeholder: "42-4368726",
+  },
+  {
+    name: "amountRequested",
+    label: "Amount Requested",
+    type: "number",
+    placeholder: "5002000",
+  },
+  {
+    name: "businessAddress",
+    label: "Business Address",
+    type: "text",
+    placeholder: "60 Park St",
+  },
+  {
+    name: "city",
+    label: "City",
+    type: "text",
+    placeholder: "Beverly",
+  },
+  {
+    name: "state",
+    label: "State",
+    type: "select",
+    options: ["MA", "CA", "NY", "TX", "FL"],
+    placeholder: "Select State (MA)",
+  },
+  {
+    name: "zipCode",
+    label: "Zip Code",
+    type: "text",
+    placeholder: "01915",
+  },
+  {
+    name: "businessPhone",
+    label: "Business Phone #",
+    type: "tel",
+    placeholder: "(617) 470-2099",
+  },
+  {
+    name: "businessStartDate",
+    label: "Business Start Date",
+    type: "date",
+    placeholder: "Thursday, February 26, 2015",
+  },
+  {
+    name: "industryType",
+    label: "Industry Type",
+    type: "text",
+    placeholder: "Construction Residentials",
+  },
+  {
+    name: "typeOfEntity",
+    label: "Type of Entity",
+    type: "select",
+    options: ["LLC", "Corporation", "Sole Proprietors", "Partnership"],
+    placeholder: "Sole Proprietors",
+  },
+  {
+    name: "useOfFunds",
+    label: "Use of Funds",
+    type: "select",
+    options: ["Equipment", "Expansion", "Inventory", "Working Capital"],
+    placeholder: "Equipment",
+  },
+  {
+    name: "homeBasedBusiness",
+    label: "Home Based Business",
+    type: "radio",
+    options: ["Yes", "No"],
+    placeholder: "Yes",
+  },
+  {
+    name: "acceptsCreditCards",
+    label: "Does Business Accept Credit Cards?",
+    type: "radio",
+    options: ["Yes", "No"],
+    placeholder: "Yes",
+  },
+  {
+    name: "annualRevenue",
+    label: "Annual Revenue",
+    type: "select",
+    options: ["<$100k", "$100k-$500k", "$500k-$1Million", ">$1Million"],
+    placeholder: "$500k-$1Million",
+  },
+];
