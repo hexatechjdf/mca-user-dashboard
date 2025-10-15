@@ -133,7 +133,7 @@ export default function UserInfoCard() {
                     }
                   />
                 </div>
-                <div>
+                <div className="lg:col-span-1">
                   <Label htmlFor="stateIncorporated" className="mb-2">
                     Business D/B/A Name{" "}
                   </Label>
@@ -142,6 +142,84 @@ export default function UserInfoCard() {
                     onValueChange={(value) =>
                       handleChange("stateIncorporated", value)
                     }
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select an option" />
+                    </SelectTrigger>
+
+                    <SelectContent>
+                      {StateIncorporatedOptions?.map((opt) => (
+                        <SelectItem key={opt} value={opt}>
+                          {opt}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div>
+                  <Label htmlFor="federalTaxID" className="mb-2">
+                    Federal Tax ID #{" "}
+                  </Label>
+                  <Input
+                    id="federalTaxID"
+                    type="text"
+                    placeholder="42-4368726"
+                    value={formData.federalTaxID}
+                    onChange={(e) =>
+                      handleChange("federalTaxID", e.target.value)
+                    }
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="amountRequested" className="mb-2">
+                    Amount Requested{" "}
+                  </Label>
+                  <Input
+                    id="amountRequested"
+                    type="number"
+                    placeholder="5002000"
+                    value={formData.amountRequested}
+                    onChange={(e) =>
+                      handleChange("amountRequested", e.target.value)
+                    }
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="businessAddress" className="mb-2">
+                    Business Address{" "}
+                  </Label>
+                  <Input
+                    id="businessAddress"
+                    type="text"
+                    placeholder="60 Park St"
+                    value={formData.businessAddress}
+                    onChange={(e) =>
+                      handleChange("businessAddress", e.target.value)
+                    }
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="city" className="mb-2">
+                    City{" "}
+                  </Label>
+                  <Input
+                    id="city"
+                    type="text"
+                    placeholder="Beverly"
+                    value={formData.city}
+                    onChange={(e) => handleChange("city", e.target.value)}
+                  />
+                </div>
+
+                <div className="lg:col-span-1">
+                  <Label htmlFor="state" className="mb-2">
+                    Business D/B/A Name{" "}
+                  </Label>
+                  <Select
+                    value={formData.state}
+                    onValueChange={(value) => handleChange("state", value)}
                   >
                     <SelectTrigger className="w-full">
                       <SelectValue placeholder="Select an option" />
@@ -156,78 +234,130 @@ export default function UserInfoCard() {
                   </Select>
                 </div>
 
-                {/* {businessInfoFields.map((field, index) => {
-                  const isFullWidth = field.type === "select";
+                <div>
+                  <Label htmlFor="zipCode" className="mb-2">
+                    Zip Code{" "}
+                  </Label>
+                  <Input
+                    id="zipCode"
+                    type="text"
+                    placeholder="01915"
+                    value={formData.zipCode}
+                    onChange={(e) => handleChange("zipCode", e.target.value)}
+                  />
+                </div>
 
-                  return (
-                    <div
-                      key={index}
-                      className={`flex flex-col ${
-                        isFullWidth ? "lg:col-span-2" : "lg:col-span-1"
-                      }`}
-                    >
-                      <Label className="mb-2">{field.label}</Label>
+                <div>
+                  <Label htmlFor="businessPhone" className="mb-2">
+                    Business Phone #{" "}
+                  </Label>
+                  <Input
+                    id="businessPhone"
+                    type="tel"
+                    placeholder="(617) 470-2099"
+                    value={formData.businessPhone}
+                    onChange={(e) =>
+                      handleChange("businessPhone", e.target.value)
+                    }
+                  />
+                </div>
 
-                      {["text", "number", "tel", "date"].includes(
-                        field.type
-                      ) && (
-                        <Input
-                          type={field.type}
-                          name={field.name}
-                          placeholder={field.placeholder}
-                          defaultValue={(businessInfoFields as any)[field.name]}
-                          onChange={(e) =>
-                            handleChange(field.name, e.target.value)
-                          }
-                        />
-                      )}
-                      {field.type === "select" && (
-                        <Select
-                          value={businessInfoFields[field.name] || ""}
-                          onValueChange={(value) =>
-                            handleChange(field.name, value)
-                          }
-                        >
-                          <SelectTrigger className="w-full">
-                            <SelectValue placeholder="Select an option" />
-                          </SelectTrigger>
-                          <SelectContent>
-                            {field.options?.map((opt) => (
-                              <SelectItem key={opt} value={opt}>
-                                {opt}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                      )}
+                <div>
+                  <Label htmlFor="businessStartDate" className="mb-2">
+                    Business Start Date{" "}
+                  </Label>
+                  <Input
+                    id="businessStartDate"
+                    type="date"
+                    placeholder="Thursday, February 26, 2015"
+                    value={formData.businessStartDate}
+                    onChange={(e) =>
+                      handleChange("businessStartDate", e.target.value)
+                    }
+                  />
+                </div>
 
-                      {field.type === "radio" && (
-                        <RadioGroup
-                          defaultValue={(businessInfoFields as any)[field.name]}
-                          className="flex gap-4 mt-1"
-                          onChange={(value: any) =>
-                            handleChange(field.name, value)
-                          }
-                        >
-                          {field.options?.map((opt) => (
-                            <div
-                              key={opt}
-                              className="flex items-center space-x-2"
-                            >
-                              <RadioGroupItem
-                                value={opt}
-                                id={`${field.name}-${opt}`}
-                              />
-                              <Label htmlFor={`${field.name}-${opt}`}>
-                                {opt}
-                              </Label>
-                            </div>
-                          ))}
-                        </RadioGroup>
-                      )}
-                    </div>
-                  );
-                })} */}
+                <div>
+                  <Label htmlFor="industryType" className="mb-2">
+                    Industry Type{" "}
+                  </Label>
+                  <Input
+                    id="industryType"
+                    type="text"
+                    placeholder="Construction Residentials"
+                    value={formData.industryType}
+                    onChange={(e) =>
+                      handleChange("industryType", e.target.value)
+                    }
+                  />
+                </div>
+
+                <div className="lg:col-span-1">
+                  <Label htmlFor="typeOfEntity" className="mb-2">
+                    Type of Entity{" "}
+                  </Label>
+                  <Select
+                    value={formData.typeOfEntity}
+                    onValueChange={(value) =>
+                      handleChange("typeOfEntity", value)
+                    }
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Sole Proprietors" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {StateIncorporatedOptions?.map((opt) => (
+                        <SelectItem key={opt} value={opt}>
+                          {opt}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="lg:col-span-1">
+                  <Label htmlFor="useOfFunds" className="mb-2">
+                    Use of Funds{" "}
+                  </Label>
+                  <Select
+                    value={formData.useOfFunds}
+                    onValueChange={(value) => handleChange("useOfFunds", value)}
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Equipment" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {StateIncorporatedOptions?.map((opt) => (
+                        <SelectItem key={opt} value={opt}>
+                          {opt}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+
+                <div className="lg:col-span-1">
+                  <Label htmlFor="annualRevenue" className="mb-2">
+                    Annual Revenue{" "}
+                  </Label>
+                  <Select
+                    value={formData.annualRevenue}
+                    onValueChange={(value) =>
+                      handleChange("annualRevenue", value)
+                    }
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Equipment" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {StateIncorporatedOptions?.map((opt) => (
+                        <SelectItem key={opt} value={opt}>
+                          {opt}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
               </div>
             </div>
             <div className="flex items-center gap-3 px-2 mt-6 lg:justify-end">

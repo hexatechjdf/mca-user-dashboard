@@ -174,7 +174,7 @@ layer(base);
   looks the same as it did with Tailwind CSS v3.
 
   If we ever want to remove these styles, we need to add an explicit border
-  color utility to any element that depends on these defaults.
+  color utility to any element that depends on these defaults.       
 */
 @layer base {
   *,
@@ -911,3 +911,5 @@ span.flatpickr-weekday,
     @apply bg-background text-foreground;
   }
 }
+
+
