@@ -6,12 +6,20 @@ import UserProfiles from "./pages/UserProfiles";
 import AppLayout from "./layout/AppLayout";
 import { ScrollToTop } from "./components/common/ScrollToTop";
 import Home from "./pages/Dashboard/Home";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function App() {
   return (
     <>
       <Router>
         <ScrollToTop />
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          style={{ zIndex: 9999999 }}
+        />
+
         <Routes>
           {/* Dashboard Layout */}
           <Route element={<AppLayout />}>
