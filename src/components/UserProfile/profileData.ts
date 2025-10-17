@@ -1,4 +1,4 @@
-import { BusinessInfo } from "../../types/businessInfo";
+import { BusinessInfo } from "../../types/profile";
 
 export const bussinessInfoData: BusinessInfo = {
   businessLegalName: "Works by Jesse DeBenedictis",

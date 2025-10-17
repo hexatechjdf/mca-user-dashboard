@@ -1,11 +1,15 @@
 import { useModal } from "../../hooks/useModal";
 import Label from "../form/Label";
 import { bussinessInfoData } from "./profileData";
-import { useState } from "react";
 import { format } from "date-fns";
 import BusinessInformationModal from "./BusinessInformationModal";
-import { BusinessInformationFormData } from "../../types/businessInfo";
 import { toast } from "react-toastify";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { BusinessInformationSchema } from "../schema";
+import { BusinessInformationFormData } from "../../types/profile";
+import { object } from "yup";
+import { useState } from "react";
 
 const stateIncorporatedOptions = ["MA", "CA", "NY", "TX", "FL"];
 const stateOptions = ["MA", "CA", "NY", "TX", "FL"];
@@ -21,70 +25,80 @@ const useOfFundsOptions = [
   "Inventory",
   "Working Capital",
 ];
+
 export default function BusinessInformation() {
   const { isOpen, openModal, closeModal } = useModal();
-
-  const [formData, setFormData] = useState<BusinessInformationFormData>({
-    businessLegalName: "",
-    businessDBAName: "",
-    stateIncorporated: "",
-    federalTaxID: "",
-    amountRequested: "",
-    businessAddress: "",
-    city: "",
-    state: "",
-    zipCode: "",
-    businessPhone: "",
-    businessStartDate: undefined,
-    industryType: "",
-    typeOfEntity: "",
-    useOfFunds: "",
-    homeBasedBusiness: "",
-    acceptsCreditCards: "",
-    annualRevenue: "",
+  const [updateFormData, setUpdateFormData] = useState<
+    BusinessInformationFormData[]
+  >([]);
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<BusinessInformationFormData>({
+    resolver: yupResolver(BusinessInformationSchema),
+    defaultValues: {
+      businessLegalName: "",
+      businessDBAName: "",
+      stateIncorporated: "",
+      federalTaxID: "",
+      amountRequested: undefined,
+      businessAddress: "",
+      city: "",
+      state: "",
+      zipCode: "",
+      businessPhone: "",
+      businessStartDate: undefined,
+      industryType: "",
+      typeOfEntity: "",
+      useOfFunds: "",
+      annualRevenue: "",
+      homeBasedBusiness: "",
+      acceptsCreditCards: "",
+    },
   });
-  const [updateFormData, setupdateFormData] = useState({});
 
-  const handleChange = (name: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-  const handleSave = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Saving changes...", updateFormData);
+  const handleSave: SubmitHandler<BusinessInformationFormData> = (data) => {
     try {
-      setupdateFormData({ ...formData });
-      toast.success("Updated Successfully");
-    } catch (error) {
-      toast.error( "Update failed ❌");
+      setUpdateFormData((prev) => [...prev, { ...data }]);
+      console.log(updateFormData);
+      toast.success("Updated Successfully ✅");
+      closeModal();
+    } catch {
+      toast.error("Update failed ❌");
     }
-    closeModal();
   };
 
-  const formatDate = (date: any) => (date ? format(date, "MMM d, yyyy") : "");
+  const formatDate = (date: Date) => (date ? format(date, "MMM d, yyyy") : "");
 
   return (
     <div className="p-5 border border-gray-200 rounded-2xl dark:border-gray-800 lg:p-6">
       <div className="flex flex-col gap-6 lg:flex-row lg:items-start lg:justify-between">
         <div>
-          <h4 className="text-lg font-semibold text-primary dark:text-white/90 lg:mb-6">
+          <h4 className="text-lg font-semibold text-primary dark:text-white/90 mb-6">
             Business Information{" "}
           </h4>
 
-          <div className="grid grid-cols-1 gap-4 lg:grid-cols-5 lg:gap-7 2xl:gap-x-18">
-            {Object.entries(bussinessInfoData).map(([key, value]) => (
-              <div key={key}>
-                <Label className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
-                  {key
-                    .replace(/([A-Z])/g, " $1")
-                    .replace(/^./, (s) => s.toUpperCase())}
-                  :
-                </Label>
-                <p className="text-sm font-medium text-primary dark:text-white/90">
-                  {value}
-                </p>
-              </div>
-            ))}
-          </div>
+          {Object.keys(bussinessInfoData).length === 0 ? (
+            <p className="text-gray-500 text-sm">No records added yet.</p>
+          ) : (
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-5 lg:gap-7 2xl:gap-x-18">
+              {Object.entries(bussinessInfoData).map(([key, value]) => (
+                <div key={key}>
+                  <Label className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                    {key
+                      .replace(/([A-Z])/g, " $1")
+                      .replace(/^./, (s) => s.toUpperCase())}
+                    :
+                  </Label>
+                  <p className="text-sm font-medium text-primary dark:text-white/90">
+                    {value}
+                  </p>
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         <button
@@ -113,9 +127,11 @@ export default function BusinessInformation() {
       <BusinessInformationModal
         isOpen={isOpen}
         closeModal={closeModal}
-        formData={formData}
-        handleChange={handleChange}
+        register={register}
+        control={control}
+        handleSubmit={handleSubmit}
         handleSave={handleSave}
+        errors={errors}
         formatDate={formatDate}
         stateIncorporatedOptions={stateIncorporatedOptions}
         stateOptions={stateOptions}

@@ -23,17 +23,32 @@ export interface BusinessInformationFormData {
   businessDBAName: string;
   stateIncorporated: string;
   federalTaxID: string;
-  amountRequested: string;
+  amountRequested: number;
   businessAddress: string;
   city: string;
   state: string;
   zipCode: string;
   businessPhone: string;
-  businessStartDate?: Date;
+  businessStartDate: Date;
   industryType: string;
   typeOfEntity: string;
   useOfFunds: string;
-  homeBasedBusiness: "yes" | "no" | "";
-  acceptsCreditCards: "yes" | "no" | "";
   annualRevenue: string;
+  homeBasedBusiness: string;
+  acceptsCreditCards: string;
 }
+
+export interface OwnerInformationFormData {
+  firstName: string;
+  lastName: string;
+  ssn: string;
+  dateOfBirth: string;
+  businessOwnership: string;
+  cellPhone: string;
+  homeAddress: string;
+  city: string;
+  state: string;
+  zipCode: string;
+  email: string;
+}
+

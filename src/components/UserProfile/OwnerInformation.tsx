@@ -1,70 +1,64 @@
 import { useModal } from "../../hooks/useModal";
 import Label from "../form/Label";
-import { useState } from "react";
 import { format } from "date-fns";
 import { toast } from "react-toastify";
 import OwnerInformationModal from "./OwnerInformationModal";
-import { OwnerInformationFormData } from "../../types/ownerInfor";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { OwnerInformationSchema } from "../schema";
+import React from "react";
+import { OwnerInformationFormData } from "../../types/profile";
 
 export default function OwnerInformation() {
   const { isOpen, openModal, closeModal } = useModal();
 
-  const [formData, setFormData] = useState<OwnerInformationFormData>({
-    firstName: "",
-    lastName: "",
-    ssn: "",
-    dateOfBirth: undefined,
-    businessOwnership: "",
-    cellPhone: "",
-    homeAddress: "",
-    city: "",
-    state: "",
-    zipCode: "",
-    email: "",
-  });
-  const [updateFormData, setupdateFormData] = useState<
+  const [updateFormData, setUpdateFormData] = React.useState<
     OwnerInformationFormData[]
   >([]);
 
-  const handleChange = (name: string, value: string) => {
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-  const handleSave = (e: React.FormEvent) => {
-    e.preventDefault();
+  const {
+    register,
+    handleSubmit,
+    reset,
+    control,
+    formState: { errors },
+  } = useForm<OwnerInformationFormData>({
+    resolver: yupResolver(OwnerInformationSchema),
+    defaultValues: {
+      firstName: "",
+      lastName: "",
+      ssn: "",
+      dateOfBirth: "",
+      businessOwnership: "",
+      cellPhone: "",
+      homeAddress: "",
+      city: "",
+      state: "",
+      zipCode: "",
+      email: "",
+    },
+  });
+
+  const handleSave = (data: OwnerInformationFormData) => {
     try {
-      const newEntity = { id: Date.now(), ...formData };
-      setupdateFormData((prev) => [...prev, newEntity]);
+      const newEntity = { id: Date.now(), ...data };
+      setUpdateFormData((prev) => [...prev, newEntity]);
       toast.success("Added Successfully ✅");
-      console.log("All saved data:", updateFormData);
-    } catch (error) {
+      console.log("All saved data:", [...updateFormData, newEntity]);
+      reset();
+      closeModal();
+    } catch  {
       toast.error("Failed to add ❌");
     }
-    closeModal();
   };
 
-  const formatDate = (date: any) => (date ? format(date, "MMM d, yyyy") : "");
+  const formatDate = (date: Date) => (date ? format(date, "MMM d, yyyy") : "");
 
-  const getOrdinal = (n: any) => {
+  const getOrdinal = (n: number) => {
     const s = ["th", "st", "nd", "rd"];
     const v = n % 100;
     return n + (s[(v - 20) % 10] || s[v] || s[0]);
   };
-  const item = [
-    { id: 1, firstName: "Ahsan", city: "Karachi" },
-    { id: 1, firstName: "Ahsan", city: "Karachi" },
-  ];
-
-  const newItem = { id: 1, firstName: "Ahsan", city: "Karachi" };
-
-  console.log([...item, newItem]);
-
-  // {
-  //   console.log(
-  //     Object.entries(newItem)
-  //       .filter(([key]) => key !== "id")
-  //       .map(([key, value]) => value)
-  //   );
-  // }
 
   return (
     <>
@@ -103,7 +97,7 @@ export default function OwnerInformation() {
             updateFormData.map((item, index) => (
               <div
                 key={index}
-                className="grid grid-cols-1 gap-4 lg:grid-cols-5 lg:gap-7 2xl:gap-x-18 border border-gray-200 p-4 rounded-lg mb-4"
+                className="grid grid-cols-1 gap-6 lg:grid-cols-1 lg:gap-7 2xl:gap-x-18 border border-gray-200 p-4 rounded-lg mb-4"
               >
                 <div className="col-span-5 font-semibold text-primary">
                   {getOrdinal(index + 1)} Owner Info
@@ -111,9 +105,10 @@ export default function OwnerInformation() {
 
                 {Object.entries(item)
                   .filter(([key]) => key !== "id")
+                  .reverse()
                   .map(([key, value]) => (
                     <div key={key}>
-                      <Label className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                      <Label className="col-span-1 mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
                         {key
                           .replace(/([A-Z])/g, " $1")
                           .replace(/^./, (s) => s.toUpperCase())}
@@ -132,8 +127,10 @@ export default function OwnerInformation() {
         <OwnerInformationModal
           isOpen={isOpen}
           closeModal={closeModal}
-          formData={formData}
-          handleChange={handleChange}
+          register={register}
+          handleSubmit={handleSubmit}
+          errors={errors}
+          control={control}
           handleSave={handleSave}
           formatDate={formatDate}
         />
