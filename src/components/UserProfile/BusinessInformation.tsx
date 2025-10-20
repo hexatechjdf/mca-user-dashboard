@@ -8,7 +8,6 @@ import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { BusinessInformationSchema } from "../schema";
 import { BusinessInformationFormData } from "../../types/profile";
-import { object } from "yup";
 import { useState } from "react";
 
 const stateIncorporatedOptions = ["MA", "CA", "NY", "TX", "FL"];
