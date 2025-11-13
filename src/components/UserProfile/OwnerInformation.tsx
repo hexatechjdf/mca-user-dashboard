@@ -9,12 +9,13 @@ import { OwnerInformationSchema } from "../schema";
 import React from "react";
 import { OwnerInformationFormData } from "../../types/profile";
 
-export default function OwnerInformation() {
+export default function OwnerInformation({ data }: any) {
   const { isOpen, openModal, closeModal } = useModal();
 
   const [updateFormData, setUpdateFormData] = React.useState<
     OwnerInformationFormData[]
   >([]);
+  const contacts = data?.data?.contacts;
 
   const {
     register,
@@ -47,7 +48,7 @@ export default function OwnerInformation() {
       console.log("All saved data:", [...updateFormData, newEntity]);
       reset();
       closeModal();
-    } catch  {
+    } catch {
       toast.error("Failed to add ❌");
     }
   };
@@ -91,15 +92,15 @@ export default function OwnerInformation() {
         </div>
 
         <div className="w-full mt-2">
-          {updateFormData.length === 0 ? (
+          {contacts.length === 0 ? (
             <p className="text-gray-500 text-sm">No records added yet.</p>
           ) : (
-            updateFormData.map((item, index) => (
+            contacts.map((item: string, index: number) => (
               <div
                 key={index}
-                className="grid grid-cols-1 gap-6 lg:grid-cols-1 lg:gap-7 2xl:gap-x-18 border border-gray-200 p-4 rounded-lg mb-4"
+                className="grid grid-cols-1 lg:grid-cols-5 gap-6 border border-gray-200 p-4 rounded-lg mb-4 lg:gap-7 2xl:gap-x-18"
               >
-                <div className="col-span-5 font-semibold text-primary">
+                <div className="col-span-full font-semibold text-primary mb-2">
                   {getOrdinal(index + 1)} Owner Info
                 </div>
 
@@ -107,14 +108,14 @@ export default function OwnerInformation() {
                   .filter(([key]) => key !== "id")
                   .reverse()
                   .map(([key, value]) => (
-                    <div key={key}>
-                      <Label className="col-span-1 mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
+                    <div key={key} className="flex flex-col">
+                      <Label className="text-xs text-gray-500 dark:text-gray-400 mb-1">
                         {key
                           .replace(/([A-Z])/g, " $1")
                           .replace(/^./, (s) => s.toUpperCase())}
                         :
                       </Label>
-                      <p className="text-sm font-medium text-primary dark:text-white/90">
+                      <p className="text-sm font-medium text-primary dark:text-white/90 break-words">
                         {value ? String(value) : "—"}
                       </p>
                     </div>

@@ -1,6 +1,5 @@
 import { useModal } from "../../hooks/useModal";
 import Label from "../form/Label";
-import { bussinessInfoData } from "./profileData";
 import { format } from "date-fns";
 import BusinessInformationModal from "./BusinessInformationModal";
 import { toast } from "react-toastify";
@@ -25,11 +24,14 @@ const useOfFundsOptions = [
   "Working Capital",
 ];
 
-export default function BusinessInformation() {
+export default function BusinessInformation({ data }: any) {
   const { isOpen, openModal, closeModal } = useModal();
   const [updateFormData, setUpdateFormData] = useState<
     BusinessInformationFormData[]
   >([]);
+
+  const businessInfo = data?.data?.business_info;
+
   const {
     register,
     control,
@@ -79,11 +81,11 @@ export default function BusinessInformation() {
             Business Information{" "}
           </h4>
 
-          {Object.keys(bussinessInfoData).length === 0 ? (
+          {Object.keys(businessInfo).length === 0 ? (
             <p className="text-gray-500 text-sm">No records added yet.</p>
           ) : (
             <div className="grid grid-cols-1 gap-6 lg:grid-cols-5 lg:gap-7 2xl:gap-x-18">
-              {Object.entries(bussinessInfoData).map(([key, value]) => (
+              {Object.entries(businessInfo).map(([key, value]) => (
                 <div key={key}>
                   <Label className="mb-2 text-xs leading-normal text-gray-500 dark:text-gray-400">
                     {key
@@ -92,7 +94,7 @@ export default function BusinessInformation() {
                     :
                   </Label>
                   <p className="text-sm font-medium text-primary dark:text-white/90">
-                    {value}
+                    {value as string}
                   </p>
                 </div>
               ))}

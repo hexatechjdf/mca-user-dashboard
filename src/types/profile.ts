@@ -52,3 +52,29 @@ export interface OwnerInformationFormData {
   email: string;
 }
 
+export interface FileItem {
+  name: string;
+  date: string;
+  size?: string;
+  url?: string;
+  type: "original" | "watermarked" | "short";
+}
+
+export interface TabItem {
+  value: string;
+  label: string;
+  files: FileItem[];
+  onDrop: (
+    files: File[],
+    fileType: "original" | "watermarked" | "short"
+  ) => void;
+  showSubTabs: boolean;
+}
+
+export interface DealFileCardProps {
+  showRequestButton?: boolean;
+  showTabs?: boolean;
+  tabItems?: TabItem[];
+  files?: FileItem[];
+  onDrop?: (files: File[]) => void;
+}

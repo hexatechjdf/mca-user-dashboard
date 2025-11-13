@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from "react";
-
 import { Link } from "react-router";
 import { useSidebar } from "../context/SidebarContext";
 import UserDropdown from "../components/header/UserDropdown";
@@ -8,7 +7,6 @@ const AppHeader: React.FC = () => {
   const [isApplicationMenuOpen, setApplicationMenuOpen] = useState(false);
 
   const { isMobileOpen, toggleSidebar, toggleMobileSidebar } = useSidebar();
-
   const handleToggle = () => {
     if (window.innerWidth >= 1024) {
       toggleSidebar();
@@ -113,7 +111,7 @@ const AppHeader: React.FC = () => {
               />
             </svg>
           </button>
-{/* 
+          {/*           
           <div className="hidden lg:block">
             <form>
               <div className="relative">

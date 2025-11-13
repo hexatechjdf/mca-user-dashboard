@@ -1,14 +1,51 @@
 import { useState } from "react";
-import { Link } from "react-router";
+import { Link, useNavigate } from "react-router";
 import { ChevronLeftIcon, EyeCloseIcon, EyeIcon } from "../../icons";
 import Label from "../form/Label";
 import Input from "../form/input/InputField";
 import Checkbox from "../form/input/Checkbox";
 import Button from "../ui/button/Button";
+import { useForm } from "react-hook-form";
+import { toast } from "react-toastify";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { loginSchema } from "../schema";
+import { useLeadLoginMutation } from "../../reduxApi/allApiSlice";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../reduxApi/userSlice";
+import { Spinner } from "../ui/spinner";
 
 export default function SignInForm() {
   const [showPassword, setShowPassword] = useState(false);
   const [isChecked, setIsChecked] = useState(false);
+  const [leadLogin, { isLoading: LoginLoading }] = useLeadLoginMutation();
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(loginSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+    },
+  });
+
+  const handleSave = async (loginCredentials: any) => {
+    try {
+      const res = await leadLogin(loginCredentials).unwrap();
+      toast.success(res?.message || "Added Successfully ✅");
+      reset();
+      dispatch(setUser(res.token));
+
+      navigate("/profile");
+    } catch (err: any) {
+      toast.error(err?.data?.message || "Failed to add ❌");
+    }
+  };
   return (
     <div className="flex flex-col flex-1">
       <div className="w-full max-w-md pt-10 mx-auto">
@@ -31,7 +68,7 @@ export default function SignInForm() {
             </p>
           </div>
           <div>
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-5">
+            {/* <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-5">
               <button className="inline-flex items-center justify-center gap-3 py-3 text-sm font-normal text-gray-700 transition-colors bg-gray-100 rounded-lg px-7 hover:bg-gray-200 hover:text-gray-800 dark:bg-white/5 dark:text-white/90 dark:hover:bg-white/10">
                 <svg
                   width="20"
@@ -82,24 +119,39 @@ export default function SignInForm() {
                   Or
                 </span>
               </div>
-            </div>
-            <form>
+            </div> */}
+            <form onSubmit={handleSubmit(handleSave)}>
               <div className="space-y-6">
                 <div>
-                  <Label>
+                  <Label htmlFor="email">
                     Email <span className="text-error-500">*</span>{" "}
                   </Label>
-                  <Input placeholder="info@gmail.com" />
+                  <Input
+                    placeholder="info@gmail.com"
+                    id="email"
+                    type="email"
+                    error={!!errors.email}
+                    {...register("email")}
+                  />
+                  {errors.email && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.email.message}
+                    </p>
+                  )}
                 </div>
                 <div>
-                  <Label>
+                  <Label htmlFor="password">
                     Password <span className="text-error-500">*</span>{" "}
                   </Label>
                   <div className="relative">
                     <Input
+                      id="password"
                       type={showPassword ? "text" : "password"}
+                      error={!!errors.password}
+                      {...register("password")}
                       placeholder="Enter your password"
                     />
+
                     <span
                       onClick={() => setShowPassword(!showPassword)}
                       className="absolute z-30 -translate-y-1/2 cursor-pointer right-4 top-1/2"
@@ -111,6 +163,11 @@ export default function SignInForm() {
                       )}
                     </span>
                   </div>
+                  {errors.password && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.password.message}
+                    </p>
+                  )}
                 </div>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-3">
@@ -127,8 +184,20 @@ export default function SignInForm() {
                   </Link>
                 </div>
                 <div>
-                  <Button className="w-full" size="sm">
-                    Sign in
+                  <Button
+                    type="submit"
+                    disabled={LoginLoading}
+                    aria-busy={LoginLoading}
+                    className="w-full flex items-center justify-center gap-2"
+                  >
+                    {LoginLoading ? (
+                      <>
+                        <Spinner className="w-4 h-4 animate-spin" />
+                        <span>Sign in...</span>
+                      </>
+                    ) : (
+                      <span>Sign in</span>
+                    )}
                   </Button>
                 </div>
               </div>

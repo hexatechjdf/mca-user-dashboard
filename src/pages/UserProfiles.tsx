@@ -1,10 +1,21 @@
 import PageBreadcrumb from "../components/common/PageBreadCrumb";
 import UserMetaCard from "../components/UserProfile/UserMetaCard";
-import UserAddressCard from "../components/UserProfile/OwnerInformation";
 import PageMeta from "../components/common/PageMeta";
 import BusinessInformation from "../components/UserProfile/BusinessInformation";
+import OwnerInformation from "../components/UserProfile/OwnerInformation";
+import { useGetLeadManageQuery } from "../reduxApi/allApiSlice";
+import { AllDocuments } from "../components/files";
+import UserProfileSkeleton from "../components/UserProfile/UserProfileSkeleton";
 
 export default function UserProfiles() {
+  const {
+    data: leadManage,
+    isLoading: leadManageLoading,
+    isError: leadManageError,
+  } = useGetLeadManageQuery();
+
+  if (leadManageLoading) return <UserProfileSkeleton />;
+
   return (
     <>
       <PageMeta
@@ -19,8 +30,9 @@ export default function UserProfiles() {
         </h3>
         <div className="space-y-6">
           <UserMetaCard />
-          <BusinessInformation />
-          <UserAddressCard />
+          <BusinessInformation data={leadManage} />
+          <OwnerInformation data={leadManage} />
+          <AllDocuments data={leadManage} />
         </div>
       </div>
     </>
